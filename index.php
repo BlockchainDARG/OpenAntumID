@@ -30,7 +30,10 @@ $digiid_uri = $digiid->buildURI(SERVER_URL . 'callback.php', $nonce);
 // This will only allow one nonce per IP, but it could be easily modified to allow severals per IP
 // (this is deleted after an user successfully log in the system, so only will collide if two or more users try to log in at the same time)
 $dao = new DAO();
-$result = $dao->insert($nonce, @$_SERVER['REMOTE_ADDR']);
+
+// $result = $dao->insert($nonce, @$_SERVER['REMOTE_ADDR']);
+$result = $dao->insert($nonce, get_client_ip());
+
 if(!$result)
 {
 	echo "<pre>";
@@ -38,6 +41,28 @@ if(!$result)
 	var_dump($dao);
 	die();
 }
+
+// (AntumID Development) Optimized CODE for correct IP 
+function get_client_ip() {
+    $ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+       $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+	}
+
+
 ?>
 <!DOCTYPE html>
 <html>
