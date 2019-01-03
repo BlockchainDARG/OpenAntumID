@@ -37,7 +37,7 @@ if(!$result)
 {
 	echo "<pre>";
 	echo "Database failer\n";
-	var_dump($dao);
+	//var_dump($dao); //uncomment for debug only
 	die();
 }
 ?>
@@ -62,7 +62,7 @@ if(!$result)
             <img class="justify-content-center align-items-center align-content-center align-self-center visible" src="assets/img/digibytelogin.png" width="50%" height="50%" data-bs-hover-animate="pulse" style="width:105px;">
             <br>Use the Digi-ID function of the DigiByte Wallet or Tap on the QR.<br><br>
             </a>
-	    <a href="<?php echo $digiid_uri; ?>"><img align="center" alt="Click on QRcode to activate compatible desktop wallet" border="0" width="250" height="250" data-aos="fade" src="<?php echo $digiid->qrCode($digiid_uri); ?>" /></a>
+	    <a href="<?php echo $digiid_uri; ?>"><img id="antumIDqr" align="center" alt="Click on QRcode to activate compatible desktop wallet" border="0" width="250" height="250" data-aos="fade"/></a>
       	
             <center><img class="justify-content-center align-items-center align-content-center align-self-center visible" src="assets/img/digibytelogin3.png" data-bs-hover-animate="pulse" style="width:146px;"></center>
             <br><br><br>
@@ -73,8 +73,9 @@ if(!$result)
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-animation.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
-
+<script src="digiQR.min.js"></script>
 <script type="text/javascript">
+    document.getElementById("antumIDqr").src=DigiQR.id("<?php echo $digiid_uri; ?>",300,6,0.5);//(digiid_uri,width,logo style(0-7),radius(0.0-1.0))
     setInterval(function() {
         var r = new XMLHttpRequest();
         r.open("POST", "<?php echo SERVER_URL; ?>ajax.php", true);
